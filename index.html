@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Twosome Place</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800;900&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+ 
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+            background: #fff;
+            max-width: 540px;
+            margin: 0 auto;
+            overflow-x: hidden;
+        }
+ 
+        /* ── 헤더 ── */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255,255,255,0.96);
+            padding: 0 16px;
+            height: 48px;
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 540px;
+            border: none;
+            z-index: 200;
+        }
+ 
+        .header-btn {
+            background: none;
+            border: none;
+            font-size: 22px;
+            cursor: pointer;
+            color: #111;
+            line-height: 1;
+            padding: 0;
+            width: 32px;
+        }
+ 
+        .header-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Montserrat', sans-serif; /* 폰트 적용 */
+    font-size: 15px; 
+    font-weight: 100; /* 아주 두껍게 */
+    letter-spacing: 1.2px; /* 자간을 살짝 넓혀서 로고 느낌 주기 */
+    color: #222;
+}
+ 
+        /* ── 배너 이미지 (가로 스크롤) ── */
+        .banner-wrap {
+    margin-top: 48px;
+    width: 100%;
+    overflow: hidden;  /* auto → hidden */
+    scrollbar-width: none;
+    display: flex;
+    background: #000;
+}
+
+.banner-track {
+    display: flex;
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    will-change: transform;
+    width: 100%;
+}
+
+.banner-img {
+    width: 100%;
+    min-width: 100%;
+    height: 350px;
+    object-fit: cover;
+    display: block;
+    flex-shrink: 0;
+}
+ 
+        /* ── 회원가입 회색 박스 ── */
+        .login-box {
+            background: #f1f1f1;
+            width: 100%;
+            height: 85px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 18px 0 16px;
+            cursor: pointer;
+        }
+ 
+        .login-box-left { display: flex; flex-direction: column; justify-content: center; gap: 3px; }
+ 
+        .login-tag {
+            display: flex;
+            gap: 5px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+ 
+        .login-tag-heart { color: #c94772; }
+ 
+        .login-title {
+            font-size: 16px;
+            font-weight: 800;
+            color: #111;
+        }
+ 
+        .login-arrow {
+            font-size: 20px;
+            color: #888;
+            font-weight: 300;
+        }
+ 
+        /* ── 섹션 공통 헤더 ── */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 45px;
+            padding-right: 20px;
+            padding-left: 20px;
+            padding-bottom: 26px;
+        
+        }
+ 
+        .section-title {
+            font-size: 20px;
+            font-weight: 800;
+            color: #111;
+        }
+ 
+        .more-link {
+            font-size: 13px;
+            font-weight: 500;
+            color: #555;
+            display: flex;
+            align-items: center;
+            gap: 1px;
+            cursor: pointer;
+        }
+ 
+        /* ── 필터 버튼 (가로 스크롤) ── */
+        .filter-wrap {
+            width: 100%;
+            overflow-x: auto;
+            scrollbar-width: none;
+            padding: 0 16px 4px;
+        }
+        .filter-wrap::-webkit-scrollbar { display: none; }
+ 
+        .filter-row {
+            display: flex;
+            gap: 25px;
+            width: 100%;
+            justify-content: center
+        }
+ 
+        .filter-btn {
+            background: #fff;
+            border: none;
+            border-radius: 16px;
+            height: 30px;
+            padding: 0 13px;
+            font-size: 13px;
+            font-weight: 700;
+            white-space: nowrap;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #222;
+            
+        }
+ 
+        .filter-btn.active,
+        .filter-btn:hover {
+            background: #111;
+            color: #fff;
+            border-color: #111;
+            font-weight: 800;
+        }
+ 
+        /* ── 상품 카드 가로 스크롤 ── */
+        .product-scroll {
+            width: 100%;
+            overflow-x: auto;
+            scrollbar-width: none;
+            padding: 12px 16px 16px;
+        }
+        .product-scroll::-webkit-scrollbar { display: none; }
+ 
+        .product-row {
+            display: flex;
+            gap: 14px;
+            width: max-content;
+        }
+ 
+        .product-card {
+            width: 110px;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            
+        }
+ 
+        .product-card img {
+            width: 110px;
+            height: 110px;
+            object-fit: cover;
+            border-radius: 6px;
+            background: #eee;
+            display: block;
+        }
+
+        .product-scroll {
+         -webkit-overflow-scrolling: touch;
+         scroll-behavior: smooth;
+         will-change: scroll-position;
+        }
+ 
+        .product-name {
+            font-size: 13px;
+            font-weight: 700;
+            color: #222;
+            padding-top: 5px;
+          
+        }
+ 
+        .product-price {
+            font-size: 14px;
+            font-weight: 800;
+            color: #222;
+            margin-top: auto;
+            padding-top: 10px;
+        }
+ 
+        .product-sub {
+            font-size: 13px;
+            font-weight: 500;
+            color: #444;
+            padding-top: 5px;
+            line-height: 1.4;
+        }
+ 
+        /* ── 섹션 제목 (케이크/신메뉴) ── */
+        .section-plain-title {
+            font-size: 18px;
+            font-weight: 900;
+            color: #222;
+            padding: 24px 16px 0;
+        }
+ 
+        /* ── 하단 여백 ── */
+        .bottom-spacer { height: 72px; }
+ 
+        /* ── 하단 탭바 ── */
+        .bottom-nav {
+            display: flex;
+            background: #fff;
+            z-index: 100;
+            height: 70px;
+            align-items: center;
+           border: none;
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 540px;
+        }
+
+        .gift-card {
+    justify-content: space-between;
+}
+ 
+        .nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            padding: 6px 0;
+            text-decoration: none;
+            color: #111;
+        }
+ 
+        .nav-icon { font-size: 22px; line-height: 1; }
+ 
+        .nav-label {
+            font-size: 10px;
+            font-weight: 700;
+            color: #111;
+        }
+
+        .product-namea{
+    font-size: 13px;
+    font-weight: 700;
+    color: #222;
+}
+    </style>
+</head>
+<body>
+ 
+    <!-- 헤더 -->
+    <header class="header">
+       <img src="ff.PNG" style="width:22px; height:22px; cursor:pointer;">
+        <span class="header-title">A TWOSOME PLACE</span>
+        <div style="width:32px;"></div>
+    </header>
+ 
+    <!-- 배너 이미지 -->
+    <div class="banner-wrap">
+    <div class="banner-track">
+
+        <img src="ddd.PNG" alt="배너" class="banner-img">
+        <img src="dwdwa.PNG" alt="배너" class="banner-img">
+        <img src="dddddd.PNG" alt="배너" class="banner-img">
+         <img src="dddd.PNG" alt="배너" class="banner-img">
+        <img src="dd.PNG" alt="배너" class="banner-img">
+        <img src="aa.PNG" alt="배너" class="banner-img">
+         <img src="ddddd.PNG" alt="배너" class="banner-img">
+        <img src="aaa.PNG" alt="배너" class="banner-img">
+        <img src="aaaa.PNG" alt="배너" class="banner-img">
+    </div>    
+    </div>
+ 
+    <!-- 회원가입 회색 박스 -->
+    <a href="login.html" style="text-decoration:none; color:inherit;">
+<div class="login-box">
+        <div class="login-box-left">
+            <div class="login-tag">
+                <span class="login-tag-heart">투썸하트</span>
+                <span>앱</span>
+            </div>
+            <div class="login-title">회원가입 / 로그인 하기</div>
+        </div>
+        <div class="login-arrow">›</div>
+    </div>
+ 
+    <!-- 선물 섹션 헤더 -->
+    <div class="section-header">
+        <div class="section-title">투썸을 선물하세요!</div>
+        <div class="more-link">더보기 ›</div>
+    </div>
+ 
+    <!-- 필터 버튼 -->
+    <div class="filter-wrap">
+        <div class="filter-row">
+            <button class="filter-btn active">전체</button>
+            <button class="filter-btn">1만원미만</button>
+            <button class="filter-btn">1만원대</button>
+            <button class="filter-btn">2만원대</button>
+            <button class="filter-btn">3만원이상</button>
+        </div>
+    </div>
+ 
+    <!-- 선물 상품 -->
+    <div class="product-scroll">
+        <div class="product-row">
+            <div class="product-card gift-card">
+                <img src="cc.PNG" alt="스초생">
+                <div class="product-name">스초생®</div>
+                <div class="product-price">39,000원</div>
+            </div>
+            <div class="product-card gift-card">
+                <img src="ccc.PNG" alt="5만원권">
+                <div class="product-name">5만원권</div>
+                <div class="product-price">50,000원</div>
+            </div>
+            <div class="product-card gift-card">
+                <img src="cccc.PNG" alt="3만원권">
+                <div class="product-name">3만원권</div>
+                <div class="product-price">30,000원</div>
+            </div>
+            <div class="product-card gift-card">
+    <img src="ccccc.PNG" alt="망고생">
+    <div class="product-name">망고생</div>
+    <div class="product-price">38,000원</div>
+</div>
+<div class="product-card gift-card">
+    <img src="bb.PNG" alt="스초생">
+    <div class="product-name">떠먹는 스초생+</div>
+    <div class="product-namea">아메리카노 R</div>
+    <div class="product-price">11,900원</div>
+</div>
+            <div class="product-card gift-card">
+                <img src="bbb.PNG" alt="5만원권">
+                <div class="product-name">아메리카노 R</div>
+                <div class="product-price">4,700원</div>
+            </div>
+           <div class="product-card gift-card">
+                <img src="bbbb.PNG" alt="3만원권">
+                <div class="product-name">생딸기 생크림</div>
+                <div class="product-namea">케이크 피스+</div>
+                <div class="product-price">15,900원</div>
+            </div>
+            <div class="product-card gift-card">
+                <img src="b.PNG" alt="망고생">
+                <div class="product-name">1만원권</div>
+                <div class="product-price">10,000원</div>
+            </div>
+        </div>
+    </div>
+ 
+    <!-- 홀케이크 섹션 -->
+    <div class="section-plain-title">가장 많이 주문한 홀케이크에요!</div>
+ 
+    <div class="product-scroll">
+        <div class="product-row">
+            <div class="product-card">
+                <img src="cc.PNG" alt="스초생">
+                <div class="product-sub">스초생®</div>
+            </div>
+            <div class="product-card">
+                <img src="vv.PNG" alt="두초생 미니">
+                <div class="product-sub">두초생 미니<br>(Special Edition)</div>
+            </div>
+            <div class="product-card">
+                <img src="vvv.PNG" alt="화이트 스초생">
+                <div class="product-sub">화이트 스초생</div>
+            </div>
+            <div class="product-card">
+                <img src="vvvv.PNG" alt="생딸기 듬뿍">
+                <div class="product-sub">생딸기 듬뿍 우유<br>생크림</div>
+            </div>
+             <div class="product-card">
+                <img src="tt.PNG" alt="스초생">
+                <div class="product-sub">아박®홀케이크</div>
+            </div>
+            <div class="product-card">
+                <img src="ttt.PNG" alt="두초생 미니">
+                <div class="product-sub">말차 스초생</div>
+            </div>
+            <div class="product-card">
+                <img src="tttt.PNG" alt="화이트 스초생">
+                <div class="product-sub">금귤생</div>
+            </div>
+            <div class="product-card">
+                <img src="ttttt.PNG" alt="생딸기 듬뿍">
+                <div class="product-sub">투썸 오벌 티라미슈</div>
+            </div>
+        </div>
+    </div>
+ 
+    <!-- 신메뉴 섹션 -->
+    <div class="section-plain-title">새로 나왔어요!</div>
+ 
+    <div class="product-scroll">
+        <div class="product-row">
+            <div class="product-card">
+                <img src="ww.PNG" alt="햄 에그 토스트">
+                <div class="product-sub">햄 에그 토스트</div>
+            </div>
+            <div class="product-card">
+                <img src="www.PNG" alt="우베 카페 라떼">
+                <div class="product-sub">우베 카페 라떼</div>
+            </div>
+            <div class="product-card">
+                <img src="wwww.PNG" alt="투썸 우베 라떼">
+                <div class="product-sub">투썸 우베 라떼</div>
+            </div>
+            <div class="product-card">
+                <img src="wwwww.PNG" alt="우베 쉐이크">
+                <div class="product-sub">우베 쉐이크</div>
+            </div>
+            <div class="product-card">
+                <img src="q.PNG" alt="햄 에그 토스트">
+                <div class="product-sub">애플망고 눈꽃컵</div>
+            </div>
+            
+            <div class="product-card">
+                <img src="qq.PNG" alt="우베 카페 라떼">
+                <div class="product-sub">우유 모나카 눈꽃컵</div>
+            </div>
+             <div class="product-card">
+                <img src="qqq.PNG" alt="생딸기 듬뿍">
+                <div class="product-sub">딸기초코 모나카 눈<br>꽃컵</div>
+            </div>
+            <div class="product-card">
+                <img src="qqqq.PNG" alt="투썸 우베 라떼">
+                <div class="product-sub">피치생</div>
+            </div>
+            <div class="product-card">
+                <img src="qqqqq.PNG" alt="우베 쉐이크">
+                <div class="product-sub">금귤생</div>
+            </div>
+        </div>
+    </div>
+ 
+    <div class="bottom-spacer"></div>
+ 
+    <!-- 하단 탭바 -->
+    <nav class="bottom-nav">
+        <a href="#" class="nav-item">
+            <span class="nav-icon">📃</span>
+            <span class="nav-label">주문내역</span>
+        </a>
+        <a href="#" class="nav-item">
+            <span class="nav-icon">☕</span>
+            <span class="nav-label">투썸오더</span>
+        </a>
+        <a href="#" class="nav-item">
+            <span class="nav-icon">🍰</span>
+            <span class="nav-label">케이크예약</span>
+        </a>
+        <a href="#" class="nav-item">
+            <span class="nav-icon">🎁</span>
+            <span class="nav-label">선물하기</span>
+        </a>
+        <a href="#" class="nav-item">
+            <span class="nav-icon">🎉</span>
+            <span class="nav-label">이벤트</span>
+        </a>
+    </nav>
+ 
+  <script>
+    // 필터 버튼
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
+
+    // 마우스 드래그 가로 스크롤 (상품 카드 - document 방식)
+    document.querySelectorAll('.filter-wrap, .product-scroll').forEach(el => {
+        let isDown = false, startX, scrollLeft;
+
+        el.addEventListener('mousedown', e => {
+            isDown = true;
+            startX = e.pageX;
+            scrollLeft = el.scrollLeft;
+            el.style.cursor = 'grabbing';
+            e.preventDefault();
+        });
+
+        document.addEventListener('mousemove', e => {
+            if (!isDown) return;
+            el.scrollLeft = scrollLeft - (e.pageX - startX);
+        });
+
+        document.addEventListener('mouseup', () => {
+            if (!isDown) return;
+            isDown = false;
+            el.style.cursor = 'grab';
+        });
+
+        el.style.cursor = 'grab';
+    });
+
+    // ── 배너 슬라이더 (transform 방식, 무한루프) ──
+    const track = document.querySelector('.banner-track');
+    const origImgs = Array.from(track.querySelectorAll('.banner-img'));
+    const total = origImgs.length;
+
+    const firstClone = origImgs[0].cloneNode(true);
+    const lastClone = origImgs[total - 1].cloneNode(true);
+    track.appendChild(firstClone);
+    track.insertBefore(lastClone, origImgs[0]);
+
+    let current = 1;
+    let isDragging = false;
+    let dragStartX = 0;
+    let dragDelta = 0;
+    let autoTimer;
+
+    function getWidth() {
+        return document.querySelector('.banner-wrap').offsetWidth;
+    }
+
+    function setPosition(animated) {
+        track.style.transition = animated
+            ? 'transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+            : 'none';
+        track.style.transform = `translateX(${-current * getWidth()}px)`;
+    }
+
+    function goTo(index, animated = true) {
+        current = index;
+        setPosition(animated);
+    }
+
+   track.addEventListener('transitionend', (e) => {
+    // transform 이외의 속성 transitionend는 무시
+    if (e.propertyName !== 'transform') return;
+
+    if (current === total + 1) {
+        track.style.transition = 'none';
+        current = 1;
+        track.style.transform = `translateX(${-current * getWidth()}px)`;
+        track.getBoundingClientRect();
+    } else if (current === 0) {
+        track.style.transition = 'none';
+        current = total;
+        track.style.transform = `translateX(${-current * getWidth()}px)`;
+        track.getBoundingClientRect();
+    }
+});
+
+    function startAuto() {
+        clearInterval(autoTimer);
+        autoTimer = setInterval(() => goTo(current + 1), 3000);
+    }
+    
+
+    function goToLooped(targetIndex) {
+    if (targetIndex === total + 1) {
+        track.style.transition = 'none';
+        current = 1;
+        track.style.transform = `translateX(${-current * getWidth()}px)`;
+        track.getBoundingClientRect();
+        return;
+    }
+    if (targetIndex === 0) {
+        track.style.transition = 'none';
+        current = total;
+        track.style.transform = `translateX(${-current * getWidth()}px)`;
+        track.getBoundingClientRect();
+        return;
+    }
+    goTo(targetIndex);
+}
+
+    goTo(1, false);
+    startAuto();
+
+    // 배너 마우스 드래그 (document 방식)
+    const wrap = document.querySelector('.banner-wrap');
+
+    wrap.addEventListener('mousedown', e => {
+        isDragging = true;
+        dragStartX = e.pageX;
+        dragDelta = 0;
+        clearInterval(autoTimer);
+        wrap.style.cursor = 'grabbing';
+        track.style.transition = 'none';
+        e.preventDefault();
+    });
+
+    document.addEventListener('mousemove', e => {
+        if (!isDragging) return;
+        dragDelta = e.pageX - dragStartX;
+        track.style.transform = `translateX(${-current * getWidth() + dragDelta}px)`;
+    });
+
+    document.addEventListener('mouseup', () => {
+    if (!isDragging) return;
+    isDragging = false;
+    wrap.style.cursor = 'grab';
+    const threshold = getWidth() * 0.2;
+    if (dragDelta < -threshold) goToLooped(current + 1);
+    else if (dragDelta > threshold) goToLooped(current - 1);
+    else goTo(current);
+    startAuto();
+});
+    // 터치
+    let touchStartX = 0;
+    wrap.addEventListener('touchstart', e => {
+        touchStartX = e.touches[0].clientX;
+        dragDelta = 0;
+        clearInterval(autoTimer);
+        track.style.transition = 'none';
+    }, { passive: true });
+
+    wrap.addEventListener('touchmove', e => {
+        dragDelta = e.touches[0].clientX - touchStartX;
+        track.style.transform = `translateX(${-current * getWidth() + dragDelta}px)`;
+    }, { passive: true });
+
+  wrap.addEventListener('touchend', () => {
+    const threshold = getWidth() * 0.2;
+    if (dragDelta < -threshold) goToLooped(current + 1);
+    else if (dragDelta > threshold) goToLooped(current - 1);
+    else goTo(current);
+    startAuto();
+});
+
+    wrap.style.cursor = 'grab';
+</script>
+ 
+</body>
+</html>
+ 
