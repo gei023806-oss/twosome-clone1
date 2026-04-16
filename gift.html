@@ -1,0 +1,1815 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>선물하기</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Montserrat:wght@400;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family:
+          "Noto Sans KR",
+          -apple-system,
+          BlinkMacSystemFont,
+          sans-serif;
+        background: #fff;
+        max-width: 540px;
+        margin: 0 auto;
+        overflow-x: hidden;
+      }
+
+      /* ── 상단 고정 헤더 ── */
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #fff;
+        padding: 0 12px;
+        height: 48px;
+        position: fixed;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100%;
+        max-width: 540px;
+        z-index: 200;
+      }
+
+      .header-left {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .header-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .header-btn svg {
+        width: 22px;
+        height: 22px;
+        stroke: #111;
+        fill: none;
+        stroke-width: 1.8;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .header-title {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 18px;
+        font-weight: 700;
+        color: #111;
+        letter-spacing: -0.3px;
+      }
+
+      .header-right {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+
+      .cart-btn {
+        position: relative;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 4px;
+      }
+
+      .cart-badge {
+        position: absolute;
+        bottom: 0px;
+        right: 0px;
+        background: #c8102e;
+        color: #fff;
+        font-size: 9px;
+        font-weight: 700;
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      /* ── 탭 ── */
+      .tabs {
+        display: flex;
+        border-bottom: 1px solid #e5e5e5;
+        margin-top: 48px;
+        position: sticky;
+        top: 48px;
+        background: #fff;
+        z-index: 100;
+      }
+
+      .tab {
+        flex: 1;
+        padding: 12px 0;
+        text-align: center;
+        font-size: 16px;
+        font-weight: 500;
+        color: #aaa;
+        border: none;
+        background: none;
+        border-bottom: 2.5px solid transparent;
+        cursor: pointer;
+      }
+
+      .tab.active {
+        color: #111;
+        border-bottom: 2.5px solid #111;
+      }
+
+      /* ── 배너 영역 ── */
+      .banner-wrap {
+        width: 100%;
+        overflow: hidden;
+        background: #b5906e;
+        position: relative;
+      }
+
+      .banner-track {
+        display: flex;
+        transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        will-change: transform;
+      }
+
+      .banner-slide {
+        min-width: 100%;
+        height: 240px;
+        background: #c4a07a;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 28px 28px 28px 28px;
+        position: relative;
+        overflow: hidden;
+        flex-shrink: 0;
+      }
+
+      .banner-slide-2 {
+        background: #e8d5c0;
+      }
+      .banner-slide-3 {
+        background: #d4b896;
+      }
+
+      .banner-text {
+        z-index: 2;
+      }
+
+      .banner-tag {
+        font-size: 11px;
+        font-weight: 700;
+        color: #fff;
+        background: rgba(0, 0, 0, 0.25);
+        display: inline-block;
+        padding: 2px 8px;
+        border-radius: 2px;
+        margin-bottom: 10px;
+        letter-spacing: 0.05em;
+      }
+
+      .banner-title {
+        font-size: 26px;
+        font-weight: 900;
+        color: #111;
+        line-height: 1.2;
+        margin-bottom: 8px;
+      }
+
+      .banner-desc {
+        font-size: 13px;
+        font-weight: 500;
+        color: #444;
+        line-height: 1.6;
+        margin-bottom: 16px;
+      }
+
+      .banner-cta {
+        font-size: 13px;
+        font-weight: 700;
+        color: #111;
+        text-decoration: none;
+      }
+
+      .banner-img-wrap {
+        position: relative;
+        width: 140px;
+        height: 180px;
+        flex-shrink: 0;
+      }
+
+      .banner-phone {
+        width: 100px;
+        height: 170px;
+        background: #222;
+        border-radius: 16px;
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+
+      .banner-phone-inner {
+        width: 86px;
+        height: 156px;
+        background: #fff;
+        border-radius: 12px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .banner-cake-emoji {
+        font-size: 40px;
+      }
+
+      .banner-gift-1 {
+        position: absolute;
+        left: -10px;
+        bottom: 20px;
+        font-size: 40px;
+      }
+
+      .banner-heart {
+        position: absolute;
+        left: 18px;
+        top: 20px;
+        font-size: 26px;
+      }
+
+      /* 슬라이드 도트 */
+      .banner-dots {
+        position: absolute;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 5px;
+        z-index: 10;
+      }
+
+      .dot {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.5);
+      }
+
+      .dot.active {
+        background: #fff;
+      }
+
+      /* ── 카테고리 그리드 ── */
+      .category-section {
+        padding: 40px 0 40px;
+      }
+
+      .category-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0;
+      }
+
+      .category-item {
+        display: flex;
+        border: 1px solid #e8e8e8;
+        border-radius: 8px;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 14px 8px;
+        cursor: pointer;
+        gap: 8px;
+      }
+
+      .category-icon {
+        width: 46px;
+        height: 46px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .category-icon svg {
+        width: 36px;
+        height: 36px;
+      }
+
+      .category-label {
+        font-size: 13px;
+        font-weight: 600;
+        color: #222;
+        text-align: center;
+      }
+
+      /* ── 선물 섹션 ── */
+      .gift-section {
+        padding: 0 0 20px;
+      }
+
+      .gift-section-title {
+        font-size: 24px;
+        font-weight: 700;
+        color: #111;
+        padding: 26px 16px 16px;
+      }
+
+      /* ── 필터 탭 (언더라인 스타일) ── */
+      .filter-tabs {
+        display: flex;
+        padding: 0 16px;
+        border-bottom: 1px solid #eee;
+        gap: 0;
+        margin-bottom: 20px;
+      }
+
+      .filter-tab {
+        padding: 6px 0;
+        margin-right: 20px;
+        font-size: 14px;
+        font-weight: 500;
+        color: #666666;
+        border: none;
+        background: none;
+        cursor: pointer;
+        border-bottom: 2px solid transparent;
+        white-space: nowrap;
+        transition: color 0.15s;
+      }
+
+      .filter-tab.active {
+        color: #111;
+        border-bottom: 2px solid #111;
+        font-weight: 800;
+      }
+
+      /* ── 상품 그리드 (2열) ── */
+      .product-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0 12px;
+        padding: 0 16px;
+      }
+
+      .product-item {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 28px;
+        cursor: pointer;
+      }
+
+      .product-img-wrap {
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        border-radius: 0;
+        overflow: visible;
+        background: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+      }
+
+      .product-img-wrap img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .best-badge {
+        position: absolute;
+        top: 8px;
+        left: 8px;
+        background: #111;
+        color: #fff;
+        font-size: 10px;
+        font-weight: 800;
+        padding: 2px 7px;
+        border-radius: 2px;
+        letter-spacing: 0.05em;
+      }
+
+      /* 케이크 placeholder */
+      .cake-placeholder {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 60px;
+      }
+
+      /* 상품권 카드 스타일 */
+      .voucher-card {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        justify-content: flex-end;
+        padding: 12px;
+        font-family: "Noto Sans KR", sans-serif;
+      }
+
+      .voucher-50 {
+        background: linear-gradient(135deg, #fce4ec, #f8bbd0);
+      }
+      .voucher-30 {
+        background: linear-gradient(135deg, #fce4ec, #ffcdd2);
+      }
+      .voucher-10 {
+        background: linear-gradient(135deg, #fce4ec, #ffcdd2);
+      }
+      .voucher-1 {
+        background: linear-gradient(135deg, #fce4ec, #f48fb1);
+      }
+
+      .voucher-amount {
+        font-size: 15px;
+        font-weight: 900;
+        color: #c8102e;
+        letter-spacing: -0.3px;
+      }
+
+      .voucher-brand {
+        font-size: 9px;
+        font-weight: 700;
+        color: #c8102e;
+        opacity: 0.7;
+      }
+
+      .voucher-deco {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        font-size: 28px;
+        opacity: 0.4;
+      }
+
+      .product-name {
+        font-size: 14px;
+        font-weight: 400;
+        color: #292929;
+        margin-top: 6px;
+        line-height: 1.4;
+        padding-left: 2px;
+      }
+
+      .product-price {
+        font-size: 15px;
+        font-weight: 900;
+        color: #111;
+        margin-top: 20px;
+        margin-bottom: 30px;
+        padding-left: 2px;
+      }
+
+      /* ── 하단 탭바 ── */
+      .bottom-nav {
+        display: flex;
+        background: #fff;
+        border-top: 1px solid #eee;
+        z-index: 100;
+        height: 60px;
+        align-items: center;
+        position: fixed;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100%;
+        max-width: 540px;
+      }
+
+      .nav-item {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 3px;
+        text-decoration: none;
+        color: #111;
+        padding: 6px 0;
+      }
+
+      .nav-icon {
+        font-size: 21px;
+        line-height: 1;
+      }
+
+      .nav-label {
+        font-size: 10px;
+        font-weight: 700;
+        color: #111;
+      }
+
+      .bottom-spacer {
+        height: 72px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 헤더 -->
+    <header class="header">
+      <div class="header-left">
+        <!-- 4분할 아이콘 -->
+        <button class="header-btn">
+          <svg viewBox="0 0 22 22">
+            <rect x="2" y="2" width="8" height="8" rx="1.5" />
+            <rect x="12" y="2" width="8" height="8" rx="1.5" />
+            <rect x="2" y="12" width="8" height="8" rx="1.5" />
+            <rect x="12" y="12" width="8" height="8" rx="1.5" />
+          </svg>
+        </button>
+        <!-- 홈 아이콘 -->
+        <a
+          href="index.html"
+          class="header-btn"
+          style="display: flex; align-items: center; justify-content: center"
+        >
+          <svg
+            viewBox="0 0 22 22"
+            style="
+              width: 22px;
+              height: 22px;
+              stroke: #111;
+              fill: none;
+              stroke-width: 1.8;
+              stroke-linecap: round;
+              stroke-linejoin: round;
+            "
+          >
+            <path
+              d="M3 9.5L11 3l8 6.5V19a1 1 0 01-1 1H14v-5H8v5H4a1 1 0 01-1-1V9.5z"
+            />
+          </svg>
+        </a>
+      </div>
+      <span class="header-title">선물하기</span>
+      <div class="header-right">
+        <!-- 검색 -->
+        <a
+          href="login.html"
+          class="header-btn"
+          style="display: flex; align-items: center; justify-content: center"
+        >
+          <svg
+            viewBox="0 0 22 22"
+            style="
+              width: 22px;
+              height: 22px;
+              stroke: #111;
+              fill: none;
+              stroke-width: 1.8;
+              stroke-linecap: round;
+              stroke-linejoin: round;
+            "
+          >
+            <circle cx="9.5" cy="9.5" r="6.5" />
+            <line x1="14.5" y1="14.5" x2="19" y2="19" />
+          </svg>
+        </a>
+        <!-- 장바구니 -->
+        <a
+          href="login.html"
+          class="cart-btn header-btn"
+          style="
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+          "
+        >
+          <svg
+            viewBox="0 0 22 22"
+            style="
+              width: 22px;
+              height: 22px;
+              stroke: #111;
+              fill: none;
+              stroke-width: 1.8;
+              stroke-linecap: round;
+              stroke-linejoin: round;
+            "
+          >
+            <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+            <line x1="3" y1="6" x2="21" y2="6" />
+            <path d="M16 10a4 4 0 01-8 0" />
+          </svg>
+          <span class="cart-badge">0</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- 탭 -->
+    <div class="tabs">
+      <button class="tab active" onclick="switchMainTab('home', this)">
+        홈
+      </button>
+      <button class="tab" onclick="switchMainTab('category', this)">
+        카테고리
+      </button>
+      <button class="tab" onclick="location.href = 'login.html'">선물함</button>
+    </div>
+
+    <!-- 홈 콘텐츠 -->
+    <div id="tab-home">
+      <!-- 배너 슬라이더 -->
+      <div style="width: 100%; overflow: hidden">
+        <img src="XXXX.PNG" style="width: 100%; height: 310px" />
+      </div>
+      <!-- 카테고리 그리드 -->
+      <div class="category-section">
+        <div class="category-grid">
+          <!-- NEW -->
+          <div
+            class="category-item"
+            onclick="
+              switchMainTab(
+                'category',
+                document.querySelectorAll('.tabs .tab')[1],
+              )
+            "
+          >
+            <div class="category-icon">
+              <svg viewBox="0 0 40 40" fill="none">
+                <rect
+                  x="4"
+                  y="4"
+                  width="32"
+                  height="32"
+                  rx="4"
+                  stroke="#c8102e"
+                  stroke-width="2"
+                />
+                <text
+                  x="20"
+                  y="26"
+                  text-anchor="middle"
+                  font-size="13"
+                  font-weight="900"
+                  fill="#c8102e"
+                  font-family="sans-serif"
+                >
+                  NEW
+                </text>
+              </svg>
+            </div>
+            <span class="category-label">NEW</span>
+          </div>
+          <!-- 생일/축하 -->
+          <div class="category-item">
+            <div class="category-icon">
+              <svg viewBox="0 0 40 40" fill="none">
+                <path
+                  d="M8 32V22a4 4 0 014-4h16a4 4 0 014 4v10"
+                  stroke="#111"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+                <path
+                  d="M14 18V14"
+                  stroke="#c8102e"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+                <path
+                  d="M20 18V12"
+                  stroke="#c8102e"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+                <path
+                  d="M26 18V14"
+                  stroke="#c8102e"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+                <rect x="6" y="32" width="28" height="4" rx="1" fill="#111" />
+                <circle cx="14" cy="13" r="2" fill="#c8102e" />
+                <circle cx="20" cy="11" r="2" fill="#c8102e" />
+                <circle cx="26" cy="13" r="2" fill="#c8102e" />
+              </svg>
+            </div>
+            <span class="category-label">생일/축하</span>
+          </div>
+          <!-- 감사/안부 -->
+          <div class="category-item">
+            <div class="category-icon">
+              <svg viewBox="0 0 40 40" fill="none">
+                <rect
+                  x="5"
+                  y="10"
+                  width="30"
+                  height="22"
+                  rx="3"
+                  stroke="#111"
+                  stroke-width="2"
+                />
+                <path
+                  d="M5 14l15 10 15-10"
+                  stroke="#c8102e"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </div>
+            <span class="category-label">감사/안부</span>
+          </div>
+          <!-- 케이크 -->
+          <div class="category-item">
+            <div class="category-icon">
+              <svg viewBox="0 0 40 40" fill="none">
+                <rect
+                  x="6"
+                  y="20"
+                  width="28"
+                  height="14"
+                  rx="3"
+                  stroke="#111"
+                  stroke-width="2"
+                />
+                <rect
+                  x="10"
+                  y="14"
+                  width="20"
+                  height="8"
+                  rx="2"
+                  stroke="#111"
+                  stroke-width="2"
+                />
+                <line
+                  x1="16"
+                  y1="14"
+                  x2="16"
+                  y2="9"
+                  stroke="#c8102e"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+                <line
+                  x1="20"
+                  y1="14"
+                  x2="20"
+                  y2="7"
+                  stroke="#c8102e"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+                <line
+                  x1="24"
+                  y1="14"
+                  x2="24"
+                  y2="9"
+                  stroke="#c8102e"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+                <circle cx="16" cy="8" r="1.5" fill="#c8102e" />
+                <circle cx="20" cy="6" r="1.5" fill="#c8102e" />
+                <circle cx="24" cy="8" r="1.5" fill="#c8102e" />
+              </svg>
+            </div>
+            <span class="category-label">케이크</span>
+          </div>
+          <!-- 금액권 -->
+          <div class="category-item">
+            <div class="category-icon">
+              <svg viewBox="0 0 40 40" fill="none">
+                <rect
+                  x="4"
+                  y="10"
+                  width="32"
+                  height="20"
+                  rx="3"
+                  stroke="#111"
+                  stroke-width="2"
+                />
+                <rect
+                  x="4"
+                  y="17"
+                  width="32"
+                  height="6"
+                  fill="#c8102e"
+                  opacity="0.15"
+                />
+                <text
+                  x="20"
+                  y="23"
+                  text-anchor="middle"
+                  font-size="10"
+                  font-weight="900"
+                  fill="#c8102e"
+                  font-family="sans-serif"
+                >
+                  W
+                </text>
+              </svg>
+            </div>
+            <span class="category-label">금액권</span>
+          </div>
+          <!-- 디지트세트 -->
+          <div class="category-item">
+            <div class="category-icon">
+              <svg viewBox="0 0 40 40" fill="none">
+                <rect
+                  x="5"
+                  y="8"
+                  width="18"
+                  height="18"
+                  rx="2"
+                  stroke="#c8102e"
+                  stroke-width="2"
+                />
+                <rect
+                  x="17"
+                  y="14"
+                  width="18"
+                  height="18"
+                  rx="2"
+                  fill="#fff"
+                  stroke="#c8102e"
+                  stroke-width="2"
+                />
+                <line
+                  x1="21"
+                  y1="23"
+                  x2="31"
+                  y2="23"
+                  stroke="#111"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                />
+                <line
+                  x1="21"
+                  y1="27"
+                  x2="28"
+                  y2="27"
+                  stroke="#111"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </div>
+            <span class="category-label">디지트세트</span>
+          </div>
+          <!-- 디지트 -->
+          <div class="category-item">
+            <div class="category-icon">
+              <svg viewBox="0 0 40 40" fill="none">
+                <rect
+                  x="7"
+                  y="6"
+                  width="26"
+                  height="28"
+                  rx="3"
+                  stroke="#c8102e"
+                  stroke-width="2"
+                />
+                <line
+                  x1="13"
+                  y1="16"
+                  x2="27"
+                  y2="16"
+                  stroke="#111"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                />
+                <line
+                  x1="13"
+                  y1="22"
+                  x2="27"
+                  y2="22"
+                  stroke="#111"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                />
+                <line
+                  x1="13"
+                  y1="28"
+                  x2="21"
+                  y2="28"
+                  stroke="#111"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </div>
+            <span class="category-label">디지트</span>
+          </div>
+          <!-- 커피/음료 -->
+          <div class="category-item">
+            <div class="category-icon">
+              <svg viewBox="0 0 40 40" fill="none">
+                <path
+                  d="M10 14h16l-2 16H12L10 14z"
+                  stroke="#111"
+                  stroke-width="2"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M26 18h4a3 3 0 010 6h-4"
+                  stroke="#c8102e"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+                <path
+                  d="M15 10c0-3 4-3 4-6"
+                  stroke="#c8102e"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                />
+                <path
+                  d="M20 10c0-3 4-3 4-6"
+                  stroke="#c8102e"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </div>
+            <span class="category-label">커피/음료</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 선물 섹션 -->
+      <div class="gift-section">
+        <div class="gift-section-title">투썸을 선물하세요!</div>
+
+        <!-- 필터 탭 -->
+        <div class="filter-tabs">
+          <button
+            class="filter-tab active"
+            onclick="filterProducts('all', this)"
+          >
+            전체
+          </button>
+          <button class="filter-tab" onclick="filterProducts('under10', this)">
+            1만원미만
+          </button>
+          <button class="filter-tab" onclick="filterProducts('10s', this)">
+            1만원대
+          </button>
+          <button class="filter-tab" onclick="filterProducts('20s', this)">
+            2만원대
+          </button>
+          <button class="filter-tab" onclick="filterProducts('30up', this)">
+            3만원이상
+          </button>
+        </div>
+
+        <!-- 상품 그리드 -->
+        <div class="product-grid" id="productGrid">
+          <!-- 스초생 (케이크) -->
+          <div class="product-item" data-price="39000">
+            <div class="product-img-wrap">
+              <img
+                src="ma.PNG"
+                style="
+                  width: 100%;
+                  height: 100%;
+                  object-fit: cover;
+                  padding-top: 10px;
+                  padding-left: 2px;
+                "
+              />
+            </div>
+            <div class="product-name">스초생®</div>
+            <div class="product-price">39,000원</div>
+          </div>
+          <!-- 5만원권 -->
+          <div class="product-item" data-price="39000">
+            <div class="product-img-wrap">
+              <img
+                src="mama.PNG"
+                style="
+                  width: 100%;
+                  height: 100%;
+                  object-fit: cover;
+                  padding-top: 10px;
+                  padding-left: 2px;
+                "
+              />
+            </div>
+            <div class="product-name">5만원권</div>
+            <div class="product-price">50,000원</div>
+          </div>
+          <!-- 1만원권 -->
+          <div class="product-item" data-price="39000">
+            <div class="product-img-wrap">
+              <img
+                src="mpp.PNG"
+                style="
+                  width: 100%;
+                  height: 100%;
+                  object-fit: cover;
+                  padding-top: 10px;
+                  padding-left: 2px;
+                "
+              />
+            </div>
+            <div class="product-name">1만원권</div>
+            <div class="product-price">10,000원</div>
+          </div>
+          <!-- 3만원권 -->
+          <div class="product-item" data-price="39000">
+            <div class="product-img-wrap">
+              <img
+                src="mmmmm.PNG"
+                style="
+                  width: 100%;
+                  height: 100%;
+                  object-fit: cover;
+                  padding-top: 10px;
+                  padding-left: 2px;
+                "
+              />
+            </div>
+            <div class="product-name">3만원권</div>
+            <div class="product-price">30,000원</div>
+          </div>
+          <!-- 망고생 -->
+          <div class="product-item" data-price="39000">
+            <div class="product-img-wrap">
+              <img
+                src="mamamam.PNG"
+                style="
+                  width: 100%;
+                  height: 100%;
+                  object-fit: cover;
+                  padding-top: 10px;
+                  padding-left: 2px;
+                "
+              />
+            </div>
+            <div class="product-name">망고생</div>
+            <div class="product-price">38,000원</div>
+          </div>
+          <!-- 떠먹는 스초생 -->
+          <div class="product-item" data-price="39000">
+            <div class="product-img-wrap">
+              <img
+                src="mamamama.PNG"
+                style="
+                  width: 100%;
+                  height: 100%;
+                  object-fit: cover;
+                  padding-top: 10px;
+                  padding-left: 2px;
+                "
+              />
+            </div>
+            <div class="product-name">생딸기 생크림 피스 + 아메리카노</div>
+            <div class="product-price">15,900원</div>
+          </div>
+          <!-- 생딸기 생크림 케이크 -->
+          <div class="product-item" data-price="39000">
+            <div class="product-img-wrap">
+              <img
+                src="lkk.PNG"
+                style="
+                  width: 100%;
+                  height: 100%;
+                  object-fit: cover;
+                  padding-top: 10px;
+                  padding-left: 2px;
+                "
+              />
+            </div>
+            <div class="product-name">떠먹는 스초생 + 아메리카노 R</div>
+            <div class="product-price">11,900원</div>
+          </div>
+          <div class="product-item" data-price="39000">
+            <div class="product-img-wrap">
+              <img
+                src="wa.PNG"
+                style="
+                  width: 100%;
+                  height: 100%;
+                  object-fit: cover;
+                  padding-top: 10px;
+                  padding-left: 2px;
+                "
+              />
+            </div>
+            <div class="product-name">아메리카노 R</div>
+            <div class="product-price">4,700원</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 카테고리 탭 콘텐츠 -->
+    <div id="tab-category" style="display: none">
+      <!-- 가로 스크롤 필터 -->
+      <div
+        style="
+          display: flex;
+          align-items: center;
+          overflow-x: auto;
+          padding: 12px 16px;
+          gap: 8px;
+          border-bottom: 1px solid #eee;
+          scrollbar-width: none;
+          -webkit-overflow-scrolling: touch;
+        "
+      >
+        <button
+          onclick="setCategoryFilter('all', this)"
+          style="
+            flex-shrink: 0;
+            background: #111;
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            padding: 7px 16px;
+            font-size: 13px;
+            font-weight: 700;
+            font-family: &quot;Noto Sans KR&quot;, sans-serif;
+            cursor: pointer;
+          "
+        >
+          전체
+        </button>
+        <button
+          onclick="setCategoryFilter('new', this)"
+          style="
+            flex-shrink: 0;
+            background: #fff;
+            color: #333;
+            border: none;
+            border-radius: 20px;
+            padding: 7px 16px;
+            font-size: 13px;
+            font-weight: 500;
+            font-family: &quot;Noto Sans KR&quot;, sans-serif;
+            cursor: pointer;
+          "
+        >
+          NEW
+        </button>
+        <button
+          onclick="setCategoryFilter('newwave', this)"
+          style="
+            flex-shrink: 0;
+            background: #fff;
+            color: #333;
+            border: none;
+            border-radius: 20px;
+            padding: 7px 16px;
+            font-size: 13px;
+            font-weight: 500;
+            font-family: &quot;Noto Sans KR&quot;, sans-serif;
+            cursor: pointer;
+          "
+        >
+          New Wave Coffee
+        </button>
+        <button
+          onclick="setCategoryFilter('cake', this)"
+          style="
+            flex-shrink: 0;
+            background: #fff;
+            color: #333;
+            border: none;
+            border-radius: 20px;
+            padding: 7px 16px;
+            font-size: 13px;
+            font-weight: 500;
+            font-family: &quot;Noto Sans KR&quot;, sans-serif;
+            cursor: pointer;
+          "
+        >
+          케이크
+        </button>
+        <button
+          onclick="setCategoryFilter('dessert', this)"
+          style="
+            flex-shrink: 0;
+            background: #fff;
+            color: #333;
+            border: none;
+            border-radius: 20px;
+            padding: 7px 16px;
+            font-size: 13px;
+            font-weight: 500;
+            font-family: &quot;Noto Sans KR&quot;, sans-serif;
+            cursor: pointer;
+          "
+        >
+          디저트세트
+        </button>
+        <button
+          onclick="setCategoryFilter('bingsu', this)"
+          style="
+            flex-shrink: 0;
+            background: #fff;
+            color: #333;
+            border: none;
+            border-radius: 20px;
+            padding: 7px 16px;
+            font-size: 13px;
+            font-weight: 500;
+            font-family: &quot;Noto Sans KR&quot;, sans-serif;
+            cursor: pointer;
+          "
+        >
+          빙수
+        </button>
+      </div>
+
+      <!-- 인기순 / 옵션 -->
+      <div
+        style="
+          display: flex;
+          justify-content: flex-end;
+          align-items: center;
+          padding: 10px 16px;
+          gap: 16px;
+          border-bottom: none;
+        "
+      >
+        <span
+          style="
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #111;
+            font-family: &quot;Noto Sans KR&quot;, sans-serif;
+            cursor: pointer;
+          "
+          onclick="openSortDropdown(this)"
+        >
+          인기순
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 14 14"
+            fill="none"
+            style="margin-top: 1px"
+          >
+            <path d="M7 3L4.5 6H9.5L7 3Z" fill="#111" />
+            <path d="M7 11L9.5 8H4.5L7 11Z" fill="#111" />
+          </svg>
+        </span>
+        <span
+          style="
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #111;
+            font-family: &quot;Noto Sans KR&quot;, sans-serif;
+            cursor: pointer;
+          "
+          onclick="openFilterModal()"
+        >
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <circle cx="7" cy="7" r="6" stroke="#111" stroke-width="1.4" />
+            <line
+              x1="4"
+              y1="5"
+              x2="10"
+              y2="5"
+              stroke="#111"
+              stroke-width="1.3"
+              stroke-linecap="round"
+            />
+            <line
+              x1="4"
+              y1="7"
+              x2="10"
+              y2="7"
+              stroke="#111"
+              stroke-width="1.3"
+              stroke-linecap="round"
+            />
+            <line
+              x1="4"
+              y1="9"
+              x2="8"
+              y2="9"
+              stroke="#111"
+              stroke-width="1.3"
+              stroke-linecap="round"
+            />
+          </svg>
+          옵션
+        </span>
+      </div>
+
+      <!-- 상품 그리드 -->
+      <div class="product-grid">
+        <!-- 스초생 -->
+        <div class="product-item" data-price="39000">
+          <div class="product-img-wrap">
+            <span class="best-badge">Best</span>
+            <img
+              src="ma.PNG"
+              style="width: 100%; height: 100%; object-fit: cover"
+            />
+          </div>
+          <div class="product-name">스초생®</div>
+          <div class="product-price">39,000원</div>
+        </div>
+        <!-- 5만원권 -->
+        <div class="product-item" data-price="50000">
+          <div class="product-img-wrap">
+            <img
+              src="mama.PNG"
+              style="width: 100%; height: 100%; object-fit: cover"
+            />
+          </div>
+          <div class="product-name">5만원권</div>
+          <div class="product-price">50,000원</div>
+        </div>
+        <!-- 1만원권 -->
+        <div class="product-item" data-price="10000">
+          <div class="product-img-wrap">
+            <img
+              src="mpp.PNG"
+              style="width: 100%; height: 100%; object-fit: cover"
+            />
+          </div>
+          <div class="product-name">1만원권</div>
+          <div class="product-price">10,000원</div>
+        </div>
+        <!-- 3만원권 -->
+        <div class="product-item" data-price="30000">
+          <div class="product-img-wrap">
+            <img
+              src="mmmmm.PNG"
+              style="width: 100%; height: 100%; object-fit: cover"
+            />
+          </div>
+          <div class="product-name">3만원권</div>
+          <div class="product-price">30,000원</div>
+        </div>
+        <!-- 망고생 -->
+        <div class="product-item" data-price="38000">
+          <div class="product-img-wrap">
+            <img
+              src="mamamam.PNG"
+              style="width: 100%; height: 100%; object-fit: cover"
+            />
+          </div>
+          <div class="product-name">망고생</div>
+          <div class="product-price">38,000원</div>
+        </div>
+        <!-- 생딸기 생크림 피스 -->
+        <div class="product-item" data-price="15900">
+          <div class="product-img-wrap">
+            <img
+              src="mamamama.PNG"
+              style="width: 100%; height: 100%; object-fit: cover"
+            />
+          </div>
+          <div class="product-name">생딸기 생크림 피스 + 아메리카노</div>
+          <div class="product-price">15,900원</div>
+        </div>
+        <!-- 떠먹는 스초생 -->
+        <div class="product-item" data-price="11900">
+          <div class="product-img-wrap">
+            <img
+              src="lkk.PNG"
+              style="width: 100%; height: 100%; object-fit: cover"
+            />
+          </div>
+          <div class="product-name">떠먹는 스초생 + 아메리카노 R</div>
+          <div class="product-price">11,900원</div>
+        </div>
+        <!-- 아메리카노 -->
+        <div class="product-item" data-price="4700">
+          <div class="product-img-wrap">
+            <img
+              src="wa.PNG"
+              style="width: 100%; height: 100%; object-fit: cover"
+            />
+          </div>
+          <div class="product-name">아메리카노 R</div>
+          <div class="product-price">4,700원</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 정렬 드롭다운 -->
+    <div
+      id="sortDropdown"
+      style="
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 300;
+      "
+      onclick="closeSortDropdown(event)"
+    >
+      <div
+        id="sortBox"
+        style="
+          position: absolute;
+          right: 60px;
+          background: #fff;
+          border: 1px solid #e0e0e0;
+          border-radius: 6px;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+          min-width: 130px;
+          overflow: hidden;
+        "
+      >
+        <div
+          onclick="selectSort('인기순')"
+          style="
+            padding: 13px 18px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #111;
+            cursor: pointer;
+            font-family: &quot;Noto Sans KR&quot;, sans-serif;
+            border-bottom: 1px solid #f0f0f0;
+          "
+        >
+          인기순
+        </div>
+        <div
+          onclick="selectSort('낮은가격순')"
+          style="
+            padding: 13px 18px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #111;
+            cursor: pointer;
+            font-family: &quot;Noto Sans KR&quot;, sans-serif;
+            border-bottom: 1px solid #f0f0f0;
+          "
+        >
+          낮은가격순
+        </div>
+        <div
+          onclick="selectSort('높은가격순')"
+          style="
+            padding: 13px 18px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #111;
+            cursor: pointer;
+            font-family: &quot;Noto Sans KR&quot;, sans-serif;
+          "
+        >
+          높은가격순
+        </div>
+      </div>
+    </div>
+
+    <!-- 필터 옵션 모달 -->
+    <div
+      id="filterModal"
+      style="
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 400;
+        justify-content: center;
+        align-items: center;
+      "
+    >
+      <div
+        style="
+          background: #fff;
+          border-radius: 12px;
+          width: 88%;
+          max-width: 400px;
+          padding: 24px 20px 0;
+          font-family: &quot;Noto Sans KR&quot;, sans-serif;
+        "
+      >
+        <!-- 헤더 -->
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+          "
+        >
+          <span style="font-size: 17px; font-weight: 700; color: #111"
+            >필터 옵션</span
+          >
+          <button
+            onclick="closeFilterModal()"
+            style="
+              background: none;
+              border: none;
+              cursor: pointer;
+              font-size: 20px;
+              color: #111;
+              line-height: 1;
+            "
+          >
+            ✕
+          </button>
+        </div>
+        <!-- 가격 -->
+        <div
+          style="
+            font-size: 14px;
+            font-weight: 700;
+            color: #111;
+            margin-bottom: 14px;
+          "
+        >
+          가격
+        </div>
+        <label
+          style="
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 0;
+            cursor: pointer;
+            font-size: 15px;
+            color: #111;
+          "
+        >
+          <input
+            type="radio"
+            name="priceFilter"
+            value="under10"
+            style="width: 20px; height: 20px; accent-color: #111"
+          />
+          1만원 미만
+        </label>
+        <label
+          style="
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 0;
+            cursor: pointer;
+            font-size: 15px;
+            color: #111;
+          "
+        >
+          <input
+            type="radio"
+            name="priceFilter"
+            value="10s"
+            style="width: 20px; height: 20px; accent-color: #111"
+          />
+          1만원대
+        </label>
+        <label
+          style="
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 0;
+            cursor: pointer;
+            font-size: 15px;
+            color: #111;
+          "
+        >
+          <input
+            type="radio"
+            name="priceFilter"
+            value="20s"
+            style="width: 20px; height: 20px; accent-color: #111"
+          />
+          2만원대
+        </label>
+        <label
+          style="
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 0;
+            cursor: pointer;
+            font-size: 15px;
+            color: #111;
+          "
+        >
+          <input
+            type="radio"
+            name="priceFilter"
+            value="30up"
+            style="width: 20px; height: 20px; accent-color: #111"
+          />
+          3만원대 이상
+        </label>
+        <!-- 버튼 -->
+        <div
+          style="
+            display: flex;
+            margin: 24px -20px 0;
+            border-top: 1px solid #eee;
+          "
+        >
+          <button
+            onclick="resetFilter()"
+            style="
+              flex: 1;
+              padding: 16px;
+              background: #fff;
+              border: none;
+              border-right: 1px solid #eee;
+              font-size: 15px;
+              font-weight: 500;
+              color: #111;
+              font-family: &quot;Noto Sans KR&quot;, sans-serif;
+              cursor: pointer;
+              border-radius: 0 0 0 12px;
+            "
+          >
+            초기화
+          </button>
+          <button
+            onclick="applyFilter()"
+            style="
+              flex: 1;
+              padding: 16px;
+              background: #111;
+              border: none;
+              font-size: 15px;
+              font-weight: 700;
+              color: #fff;
+              font-family: &quot;Noto Sans KR&quot;, sans-serif;
+              cursor: pointer;
+              border-radius: 0 0 12px 0;
+            "
+          >
+            적용
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 선물함 탭 콘텐츠 -->
+    <div id="tab-giftbox" style="display: none">
+      <div
+        style="
+          padding: 60px 16px;
+          text-align: center;
+          color: #aaa;
+          font-size: 15px;
+        "
+      >
+        선물함이 비어있습니다.
+      </div>
+    </div>
+
+    <div class="bottom-spacer"></div>
+
+    <!-- 하단 탭바 -->
+
+    <script>
+      // ── 상단 탭 전환 ──
+      function switchMainTab(tab, el) {
+        // giftbox div가 없으면 에러나므로 존재하는 것만 숨김
+        ["home", "category", "giftbox"].forEach((t) => {
+          const el2 = document.getElementById("tab-" + t);
+          if (el2) el2.style.display = "none";
+        });
+        document
+          .querySelectorAll(".tabs .tab")
+          .forEach((b) => b.classList.remove("active"));
+        el.classList.add("active");
+
+        const target = document.getElementById("tab-" + tab);
+        if (target) {
+          target.style.display = "block";
+        }
+      }
+
+      // ── 홈 탭 필터 ──
+      function filterProducts(type, el) {
+        document
+          .querySelectorAll(
+            "#productGrid .filter-tab, .filter-tabs .filter-tab",
+          )
+          .forEach((b) => b.classList.remove("active"));
+        el.classList.add("active");
+
+        const items = document.querySelectorAll("#productGrid .product-item");
+        items.forEach((item) => {
+          const price = parseInt(item.dataset.price);
+          let show = false;
+          if (type === "all") show = true;
+          else if (type === "under10") show = price < 10000;
+          else if (type === "10s") show = price >= 10000 && price < 20000;
+          else if (type === "20s") show = price >= 20000 && price < 30000;
+          else if (type === "30up") show = price >= 30000;
+          item.style.display = show ? "flex" : "none";
+        });
+      }
+
+      // ── 카테고리 필터 버튼 활성화 ──
+      function setCategoryFilter(type, el) {
+        const btns = el.parentElement.querySelectorAll("button");
+        btns.forEach((b) => {
+          b.style.background = "#fff";
+          b.style.color = "#333";
+          b.style.border = "none";
+          b.style.fontWeight = "500";
+        });
+        el.style.background = "#111";
+        el.style.color = "#fff";
+        el.style.border = "none";
+        el.style.fontWeight = "700";
+      }
+      // ── 정렬 드롭다운 ──
+      function openSortDropdown(el) {
+        const dropdown = document.getElementById("sortDropdown");
+        const box = document.getElementById("sortBox");
+        const rect = el.getBoundingClientRect();
+        box.style.top = rect.bottom + 4 + "px";
+        dropdown.style.display = "block";
+      }
+      function closeSortDropdown(e) {
+        if (e.target === document.getElementById("sortDropdown")) {
+          document.getElementById("sortDropdown").style.display = "none";
+        }
+      }
+      function selectSort(type) {
+        document.getElementById("sortDropdown").style.display = "none";
+        const grid = document.querySelector("#tab-category .product-grid");
+        const items = Array.from(grid.querySelectorAll(".product-item"));
+        items.sort((a, b) => {
+          const pa = parseInt(a.dataset.price);
+          const pb = parseInt(b.dataset.price);
+          if (type === "낮은가격순") return pa - pb;
+          if (type === "높은가격순") return pb - pa;
+          return 0;
+        });
+        items.forEach((item) => grid.appendChild(item));
+      }
+
+      // ── 필터 옵션 모달 ──
+      function openFilterModal() {
+        const modal = document.getElementById("filterModal");
+        modal.style.display = "flex";
+      }
+      function closeFilterModal() {
+        document.getElementById("filterModal").style.display = "none";
+      }
+      function resetFilter() {
+        document
+          .querySelectorAll('input[name="priceFilter"]')
+          .forEach((r) => (r.checked = false));
+      }
+      function applyFilter() {
+        const selected = document.querySelector(
+          'input[name="priceFilter"]:checked',
+        );
+        const grid = document.querySelector("#tab-category .product-grid");
+        const items = grid.querySelectorAll(".product-item");
+        items.forEach((item) => {
+          const price = parseInt(item.dataset.price);
+          let show = true;
+          if (selected) {
+            const v = selected.value;
+            if (v === "under10") show = price < 10000;
+            else if (v === "10s") show = price >= 10000 && price < 20000;
+            else if (v === "20s") show = price >= 20000 && price < 30000;
+            else if (v === "30up") show = price >= 30000;
+          }
+          item.style.display = show ? "flex" : "none";
+        });
+        closeFilterModal();
+      }
+    </script>
+  </body>
+</html>

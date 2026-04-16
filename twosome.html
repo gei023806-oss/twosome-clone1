@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>이벤트</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap");
+
+      * {
+        font-family: "Noto Sans KR", sans-serif;
+      }
+
+      /* 탭 언더라인 */
+      .tab-active {
+        border-bottom: 2.5px solid #111;
+        color: #111;
+        font-weight: 700;
+      }
+      .tab-inactive {
+        border-bottom: 2.5px solid transparent;
+        color: #aaa;
+        font-weight: 700;
+      }
+
+      /* 진행중 badge */
+      .badge-ongoing {
+        background: #c8102e;
+        color: #fff;
+        font-size: 10px;
+        font-weight: 700;
+        padding: 2px 7px;
+        border-radius: 2px;
+        letter-spacing: 0.03em;
+      }
+
+      /* 날짜 텍스트 */
+      .date-text {
+        color: #4b4a4a;
+        font-size: 12px;
+        font-weight: 600;
+        margin-top: 12px;
+        padding-bottom: 16px;
+      }
+
+      /* 이미지 placeholder */
+      .img-placeholder {
+        width: 100%;
+        background: #e5e5e5;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #bbb;
+        font-size: 13px;
+        letter-spacing: 0.05em;
+      }
+      button:active {
+        transform: none !important;
+      }
+
+      .badge-ended {
+        background: #222;
+        color: #fff;
+        font-size: 10px;
+        font-weight: 700;
+        padding: 2px 9px;
+        border-radius: 2px;
+        letter-spacing: 0.03em;
+      }
+    </style>
+  </head>
+  <body class="bg-white w-full min-h-screen flex flex-col overflow-x-hidden">
+    <!-- 상단 고정 헤더 -->
+    <div
+      class="sticky top-0 z-50 bg-white overflow-hidden"
+      style="background: rgb(255, 255, 255)"
+    >
+      <!-- 네비게이션 바 -->
+      <div class="flex items-center px-0 py-2">
+        <!-- 뒤로가기 -->
+       <a href="index.html" class="mr-3 text-gray-800">
+  <img src="mm.PNG" class="w-8 h-8" />
+</a>
+<a href="index.html" class="text-gray-800">
+  <img src="m.PNG" class="w-8 h-8" />
+</a>
+        <!-- 타이틀 -->
+        <h1
+          class="absolute left-1/2 -translate-x-1/2 text-gray-900 tracking-tight"
+          style="font-size: 19px; font-weight: 900; margin-bottom: 0px"
+        >
+          이벤트
+        </h1>
+      </div>
+
+      <!-- 탭 -->
+      <div class="flex border-b border-gray-200">
+        <button
+          id="tab-active"
+          onclick="switchTab('active')"
+          class="flex-1 py-2 text-base text-center tab-active"
+        >
+          진행 중 이벤트
+        </button>
+        <button
+          id="tab-ended"
+          onclick="switchTab('ended')"
+          class="flex-1 py-2 text-base text-center tab-inactive"
+        >
+          종료된 이벤트
+        </button>
+      </div>
+    </div>
+
+    <!-- 콘텐츠 영역 -->
+    <div class="flex-1">
+      <!-- ===== 진행 중 이벤트 ===== -->
+      <div id="section-active" style="overflow: visible">
+        <!-- 총 N개 -->
+        <div
+          class="px-4 pt-4 pb-2 text-[13px] text-gray-800"
+          style="font-weight: 900"
+        >
+          총 6개
+        </div>
+
+        <!-- 카드 목록 -->
+        <div class="flex flex-col gap-0 divide-y divide-gray-100 px-4">
+          <!-- 카드 1: 가정의달 케이크 -->
+          <div class="card-active cursor-pointer px-0 pb-4 relative">
+            <div>
+              <span class="badge-ongoing absolute top-1 -left-1 z-10"
+                >진행중</span
+              >
+              <div class="img-placeholder" style="position: relative">
+                <img src="E.png" style="width: 100%; height: 100%" />
+              </div>
+            </div>
+            <div class="px-0 pt-5">
+              <p class="text-[18px] font-medium text-gray-900">
+                26년 가정의 달 케이크 신제품 출시
+              </p>
+              <p class="date-text">2026-04-15 ~ 2026-05-31</p>
+            </div>
+          </div>
+
+          <!-- 카드 2: 창업설명회 -->
+          <div class="card-active cursor-pointer px-0 pb-4 relative">
+            <div>
+              <span class="badge-ongoing absolute top-1 -left-1 z-10"
+                >진행중</span
+              >
+              <div class="img-placeholder" style="position: relative">
+                <img src="EEE.png" style="width: 100%; height: 100%" />
+              </div>
+            </div>
+            <div class="px-0 pt-5">
+              <p class="text-[18px] font-medium text-gray-900">
+                서울 창업설명회 안내
+              </p>
+              <p class="date-text">2026-04-10 ~ 2026-04-28</p>
+            </div>
+          </div>
+
+          <!-- 카드 3: 샌드위치 -->
+          <div class="card-active cursor-pointer px-0 pb-4 relative">
+            <div>
+              <span class="badge-ongoing absolute top-1 -left-1 z-10"
+                >진행중</span
+              >
+              <div class="img-placeholder" style="position: relative">
+                <img src="EEEE.png" style="width: 100%; height: 100%" />
+              </div>
+            </div>
+            <div class="px-0 pt-5">
+              <p class="text-[18px] font-medium text-gray-900">
+                투썸 샌드위치 신메뉴 출시
+              </p>
+              <p class="date-text">2026-04-01 ~ 2026-04-30</p>
+            </div>
+          </div>
+
+          <!-- 카드 4 -->
+          <div class="card-active cursor-pointer px-0 pb-4 relative">
+            <div>
+              <span class="badge-ongoing absolute top-1 -left-1 z-10"
+                >진행중</span
+              >
+              <div class="img-placeholder" style="position: relative">
+                <img src="EE.png" style="width: 100%; height: 100%" />
+              </div>
+            </div>
+            <div class="px-0 pt-5">
+              <p class="text-[18px] font-medium text-gray-900">
+                4월 LG U+유플투쁠
+              </p>
+              <p class="date-text">2026-04-07 ~ 2026-04-30</p>
+            </div>
+          </div>
+
+          <div class="card-active cursor-pointer px-0 pb-4 relative">
+            <div>
+              <span class="badge-ongoing absolute top-1 -left-1 z-10"
+                >진행중</span
+              >
+              <div class="img-placeholder" style="position: relative">
+                <img src="EEEEE.png" style="width: 100%; height: 100%" />
+              </div>
+            </div>
+            <div class="px-0 pt-5">
+              <p class="text-[18px] font-medium text-gray-900">
+                PAYCO 포인트 결제 프로모션
+              </p>
+              <p class="date-text">2026-04-06 ~ 2026-04-19</p>
+            </div>
+          </div>
+
+          <div class="card-active cursor-pointer px-0 pb-4 relative">
+            <div>
+              <span class="badge-ongoing absolute top-1 -left-1 z-10"
+                >진행중</span
+              >
+              <div class="img-placeholder" style="position: relative">
+                <img src="EEEEEE.png" style="width: 100%; height: 100%" />
+              </div>
+            </div>
+            <div class="px-0 pt-5">
+              <p class="text-[18px] font-medium text-gray-900">
+                두초생 미니 투썸하트앱 예약 오픈
+              </p>
+              <p class="date-text">2026-04-04 ~ 2026-04-30</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== 종료된 이벤트 ===== -->
+      <div id="section-ended" class="hidden">
+        <div
+          class="px-4 pt-4 pb-2 text-[13px] text-gray-800"
+          style="font-weight: 900"
+        >
+          총 5개
+        </div>
+
+        <div class="flex flex-col gap-0 divide-y divide-gray-100 px-4">
+          <!-- 종료 카드 1 -->
+          <div class="card-ended cursor-pointer px-0 pb-4 relative">
+            <div class="relative">
+              <span class="badge-ended absolute top-1 -left-1 z-10">종료</span>
+
+              <div class="img-placeholder" style="position: relative">
+                <img src="G.png" style="width: 100%; height: 100%" />
+              </div>
+            </div>
+            <div class="px-0 pt-5">
+              <p class="text-[18px] font-medium text-gray-900">
+                투썸 우베 라떼 출시 알림 신청하기
+              </p>
+              <p class="date-text">2026-04-01 ~ 2026-04-5</p>
+            </div>
+          </div>
+
+          <!-- 종료 카드 2 -->
+          <div class="card-ended cursor-pointer px-0 pb-4 relative">
+            <div class="relative">
+              <span class="badge-ended absolute top-1 -left-1 z-10">종료</span>
+             <div class="img-placeholder" style="position: relative">
+                <img src="GG.png" style="width: 100%; height: 100%" />
+              </div>
+            </div>
+            <div class="px-0 pt-5">
+              <p class="text-[18px] font-medium text-gray-900">
+                26년 4월 슈퍼투썸데이
+              </p>
+              <p class="date-text">2026-04-01 ~ 2026-04-3</p>
+            </div>
+          </div>
+          <!-- 종료 카드 3 -->
+          <div class="card-ended cursor-pointer px-0 pb-4 relative">
+            <div class="relative">
+              <span class="badge-ended absolute top-1 -left-1 z-10">종료</span>
+             <div class="img-placeholder" style="position: relative">
+                <img src="GGG.png" style="width: 100%; height: 100%" />
+              </div>
+            </div>
+            <div class="px-0 pt-5">
+              <p class="text-[18px] font-medium text-gray-900">
+                3월 LG U+유플투쁠
+              </p>
+              <p class="date-text">2026-04-04 ~ 2026-04-30</p>
+            </div>
+          </div>
+            <div class="card-ended cursor-pointer px-0 pb-4 relative">
+            <div class="relative">
+              <span class="badge-ended absolute top-1 -left-1 z-10">종료</span>
+             <div class="img-placeholder" style="position: relative">
+                <img src="GGGG.png" style="width: 100%; height: 100%" />
+              </div>
+            </div>
+            <div class="px-0 pt-5">
+              <p class="text-[18px] font-medium text-gray-900">
+                New Wave Coffe 커피스탬프
+              </p>
+              <p class="date-text">2026-03-18 ~ 2026-04-07</p>
+            </div>
+          </div>
+            <div class="card-ended cursor-pointer px-0 pb-4 relative">
+            <div class="relative">
+              <span class="badge-ended absolute top-1 -left-1 z-10">종료</span>
+             <div class="img-placeholder" style="position: relative">
+                <img src="GGGGG.png" style="width: 100%; height: 100%" />
+              </div>
+            </div>
+            <div class="px-0 pt-5">
+              <p class="text-[18px] font-medium text-gray-900">
+                하이드로 플라스크 투썸 전용 신제품 출시
+              </p>
+              <p class="date-text">2026-03-12 ~ 2026-04-11</p>
+            </div>
+          </div>
+      </div>
+    </div>
+
+    <script>
+      function switchTab(tab) {
+        const tabActive = document.getElementById("tab-active");
+        const tabEnded = document.getElementById("tab-ended");
+        const secActive = document.getElementById("section-active");
+        const secEnded = document.getElementById("section-ended");
+
+        if (tab === "active") {
+          tabActive.className = "flex-1 py-2 text-base text-center tab-active";
+          tabEnded.className = "flex-1 py-2 text-base text-center tab-inactive";
+          secActive.classList.remove("hidden");
+          secEnded.classList.add("hidden");
+        } else {
+          tabActive.className =
+            "flex-1 py-2 text-base text-center tab-inactive";
+          tabEnded.className = "flex-1 py-2 text-base text-center tab-active";
+          secActive.classList.add("hidden");
+          secEnded.classList.remove("hidden");
+        }
+      }
+    </script>
+  </body>
+</html>
